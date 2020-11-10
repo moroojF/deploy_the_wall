@@ -1,0 +1,9 @@
+*{
+    border: red 1 px dotted;
+}
+
+#wrapper{
+    width: 970px;
+    margin: 0 auto;
+    background-color: honeydew;
+}

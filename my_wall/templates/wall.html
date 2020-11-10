@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- improting bootstrap -->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- improting personalize css styling -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'dashboard/css/master.css' %}">    
+    <title>The Wall</title>
+</head>
+
+<body>
+    <div class="container">
+
+        <nav class="navbar fixed-top navbar-light bg-dark">
+            <h4 class="text-light">The Dojo Wall</h4>
+            <h4 class="row text-light">Welcome To the WALL {{ user.first_name }}</h4>
+            <a href="/logout" class="btn btn-secondary btn-small text-right">Log Out</a>
+        </nav>
+
+
+        <div style='height: 100px; width: max-content;'></div>
+
+        <form action="/wall/createMsg" class="form-group" method="POST">
+
+            {% csrf_token %}
+
+            <!-- you have the users ID from session -->
+            <h3>Create a New post</h3>
+            <textarea name="message" class="form-control" placeholder='what you want to post here'></textarea>
+            <input type="submit" class="btn btn-small btn-outline-primary m-2" value="Add a post">
+
+        </form>
+
+        {% for msg in all_messages reversed %}
+
+        <div class="media mt-3">
+            <div class="media-body">
+
+                <h6>
+                    
+                    {{msg.user_id.first_name}} {{msg.user_id.last_name}} {{ msg.created_at }}
+
+                    {% if msg.user_id.id == user.id %}
+                    <a type="button" href='/wall/delete/message/{{msg.id}}' class="close" aria-label="Close">
+                        <span aria-hidden="true">lets delete</span>
+                    </a>
+                    {% endif %}
+
+                </h6>
+
+
+                <h6>
+                                {{ comment.user_id.first_name }} {{ comment.user_id.last_name }}
+                                {{ comment.created_at }}
+
+                                {% if comment.user_id.id == user.id %}
+                                <a type="button" href='/wall/delete/comment/{{comment.id}}' class="close" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </a>
+                                {% endif %}
+
+                            </h6>
+
+                <p>{{ msg.message }} </p>
+                <p>{{msg.created_at}}</p>
+
+
+                {% for comment in all_comments %}
+
+                {% if comment.message_id.id == msg.id %}
+
+
+                <div class="media mt-3">
+
+                    <div class="media-body ml-3">
+
+                        <div class="media-body ml-3">
+
+                            <h6>
+                                {{ comment.user_id.first_name }} {{ comment.user_id.last_name }}
+                                {{ comment.created_at }}
+
+                                {% if comment.user_id.id == user.id %}
+                                <a type="button" href='/wall/delete/comment/{{comment.id}}' class="close" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </a>
+                                {% endif %}
+
+                            </h6>
+
+
+
+                            <p>{{ comment.comment }}</p>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+                {% endif %}
+
+                {% endfor %}
+                <form action="/wall/createComment" class="form-group" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name='msg' value="{{ msg.id }}">
+
+                    <textarea name="content" class="form-control"
+                        placeholder="what you want to comment here"></textarea>
+
+                    <input type="submit" value="Make a comment" class="btn btn-small btn-outline-primary m-2">
+
+                </form>
+            </div>
+
+        </div>
+
+
+        {% endfor %}
+
+
+    </div>
+</body>
+
+</html>

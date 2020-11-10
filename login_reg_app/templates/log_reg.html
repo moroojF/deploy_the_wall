@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Registeration</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'log_reg_style.css' %}">
+    
+</head>
+<body>
+    <div id="wrapper">
+        <div id="Reg">
+            <h3>Registeration</h3>
+            <form action="/add_user" method="post" id="register">
+                <label for="first_name">First Name: </label>
+                <input type="text" name="first_name" id="first_name">
+
+                <label for="last_name">Last Name: </label>
+                <input type="text" name="last_name" id="last_name">
+
+                <label for="email">Email: </label>
+                <input type="text" name="email" id="email">
+                
+                <label for="password">Password: </label>
+                <input type="password" name="password" id="password">
+                
+                <label for="c_password">Confirm PW: </label>
+                <input type="password" name="c_password" id="c_password">
+
+                <input type="hidden" name="register">
+                <button type="submit">Register</button>
+            </form>
+        </div>
+        
+        <div id="login">
+            <h3>Login</h3>
+            <form action="/login" method="POST" id="login">
+                <label for="log_email">Email: </label>
+                <input type="text" name="log_email" id="log_email">
+                
+                <label for="log_password">Password: </label>
+                <input type="password" name="log_password" id="log_password">
+
+                <input type="hidden" name="login">
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
